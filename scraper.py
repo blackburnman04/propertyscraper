@@ -31,8 +31,8 @@ for item in g_data:
     houses.append(course)
         
 
-for i in range(1,10):
-    time.sleep(5)#delay time requests are sent so we don't get kicked by server
+for i in range(1,15)#page range pages 1 to 15 are crawled:
+    time.sleep(2)#delay time requests are sent so we don't get kicked by server
     url2 = "https://www.propertypal.com/property-to-rent/newtownabbey/page-{0}".format(i)
     page2=requests.get(url2)
     soup=BeautifulSoup(page2.text,"lxml")
@@ -58,7 +58,7 @@ for i in range(1,10):
         course=[title,town,price,period]
         houses.append(course)
 
-        
+# output to csv file        
 with open ('newtownabbeyrentalproperties.csv','w') as file:
    writer=csv.writer(file)
    writer.writerow(['Address','Town', 'Price', 'Period'])
