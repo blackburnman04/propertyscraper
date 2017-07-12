@@ -4,16 +4,26 @@ import csv
 import sys
 from bs4 import BeautifulSoup
 
-houses = []
+housesforrent = []
+housestobuy = []
 
 
 
-def save():
+def saverent():
     filename = input("Please input name of file to be saved")        
     with open (filename + '.csv','w') as file:
        writer=csv.writer(file)
        writer.writerow(['Address','Town', 'Price', 'Period'])
-       for row in houses:
+       for row in housesforrent:
+          writer.writerow(row)
+    print("File Saved Successfully")
+
+def savebuy():
+    filename = input("Please input name of file to be saved")        
+    with open (filename + '.csv','w') as file:
+       writer=csv.writer(file)
+       writer.writerow(['Address','Town', 'Price', 'Period'])
+       for row in housestobuy:
           writer.writerow(row)
     print("File Saved Successfully")
 
@@ -43,8 +53,8 @@ def rent():
             period = item.find_all("span", {"class": "price-period"})[0].text
         except:
             pass
-        course=[title,town,price,period]
-        houses.append(course)
+        scrape=[title,town,price,period]
+        housesforrent.append(scrape)
 
 
     button_next = soup.find("a", {"class": "btn paging-next"}, href=True)
@@ -74,8 +84,8 @@ def rent():
                 pass
             button_next = soup.find("a", {"class" : "btn paging-next"}, href=True)
 
-            course=[title,town,price,period]
-            houses.append(course)
+            scrape=[title,town,price,period]
+            housesforrent.append(scrape)
 
 
 
@@ -104,8 +114,8 @@ def buy():
             period = item.find_all("span", {"class": "price-period"})[0].text
         except:
             pass
-        course=[title,town,price,period]
-        houses.append(course)
+        scrape2=[title,town,price,period]
+        housestobuy.append(scrape2)
 
 
     button_next = soup.find("a", {"class": "btn paging-next"}, href=True)
@@ -135,8 +145,8 @@ def buy():
                 pass
             button_next = soup.find("a", {"class" : "btn paging-next"}, href=True)
 
-            course=[title,town,price,period]
-            houses.append(course)
+            scrape2=[title,town,price,period]
+            housestobuy.append(scrape2)
 
 
 def menu():
@@ -150,10 +160,10 @@ while True:          #use while True
     choice = menu()
     if choice == 1:
         rent()
-        save()
+        saverent()
     elif choice == 2:
         buy()
-        save()
+        savebuy()
     elif choice == 3:
         break
     
