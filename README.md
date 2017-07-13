@@ -1,5 +1,5 @@
 # Rental Scraper
-Python 3 &amp; BeautifulSoup4 scraper which scrapes details about current rental properties in Newtownabbey. (Scraped from PropertyPal.com)
+Python 3 &amp; BeautifulSoup4 scraper which scrapes details about current rental and sale properties in Northern Ireland (Scraped from PropertyPal.com)
 
 Dependencies:
 
