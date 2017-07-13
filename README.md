@@ -1,4 +1,4 @@
-# Property Rentals and Sales Scraper
+# NI Property Rentals and Sales Scraper
 Python 3 &amp; BeautifulSoup4 scraper which scrapes details about current rental and sale properties in Northern Ireland (Scraped from PropertyPal.com)
 
 Dependencies:
