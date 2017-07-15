@@ -4,8 +4,11 @@ import csv
 import sys
 from bs4 import BeautifulSoup
 
-housesforrent = []
-housestobuy = []
+houses = []
+
+
+def deletelist():
+    houses.clear()
 
 
 
@@ -14,7 +17,7 @@ def saverent():
     with open (filename + '.csv','w') as file:
        writer=csv.writer(file)
        writer.writerow(['Address','Town', 'Price', 'Period'])
-       for row in housesforrent:
+       for row in houses:
           writer.writerow(row)
     print("File Saved Successfully")
 
@@ -23,19 +26,24 @@ def savebuy():
     with open (filename + '.csv','w') as file:
        writer=csv.writer(file)
        writer.writerow(['Address','Town', 'Price', 'Period'])
-       for row in housestobuy:
+       for row in houses:
           writer.writerow(row)
     print("File Saved Successfully")
 
+def appendhouses(scrape):
+    houses.append(scrape)
 
-def rent():
     
-    search = input("Please enter town")
 
-    url = "https://www.propertypal.com/property-to-rent/" + search
+def makesoup(url):
     page=requests.get(url)
-    soup=BeautifulSoup(page.text,"lxml")
-    g_data = soup.findAll("div", {"class": "propbox-details"})
+    print(url + "  scraped successfully")
+    return BeautifulSoup(page.text,"lxml")
+
+def rentallist(scrape):
+    houses.insert(1, scrape)
+    
+def rentalscrape(g_data):
     for item in g_data:
         try:
             title = item.find_all("span", {"class": "propbox-addr"})[0].text
@@ -53,100 +61,40 @@ def rent():
             period = item.find_all("span", {"class": "price-period"})[0].text
         except:
             pass
-        scrape=[title,town,price,period]
-        housesforrent.append(scrape)
+        appendhouses(scrape=[title,town,price,period])
+        
+    
 
-
+def rent():
+    
+    search = input("Please enter town")
+    soup=makesoup(url = "https://www.propertypal.com/property-to-rent/" + search)
+    rentalscrape(g_data = soup.findAll("div", {"class": "propbox-details"}))
+    
     button_next = soup.find("a", {"class": "btn paging-next"}, href=True)
     while button_next:
         time.sleep(2)#delay time requests are sent so we don't get kicked by server
-        url = "https://www.propertypal.com{0}".format(button_next["href"])
-        page=requests.get(url)
-        print(url + "  scraped successfully")
-        soup=BeautifulSoup(page.text,"lxml")
-        g_data = soup.findAll("div", {"class": "propbox-details"})
-        for item in g_data:
-            try:
-                title = item.find_all("span", {"class": "propbox-addr"})[0].text
-            except:
-                pass
-            try:
-                town = item.find_all("span", {"class": "propbox-town"})[0].text
-            except:
-                pass
-            try:
-                price = item.find_all("span", {"class": "price-value"})[0].text
-            except:
-                pass
-            try:
-                period = item.find_all("span", {"class": "price-period"})[0].text
-            except:
-                pass
-            button_next = soup.find("a", {"class" : "btn paging-next"}, href=True)
+        soup=makesoup(url = "https://www.propertypal.com{0}".format(button_next["href"]))
+        rentalscrape(g_data = soup.findAll("div", {"class": "propbox-details"}))
 
-            scrape=[title,town,price,period]
-            housesforrent.append(scrape)
-
+        button_next = soup.find("a", {"class" : "btn paging-next"}, href=True)
 
 
 def buy():
     
     search = input("Please enter town")
-
-    url = "https://www.propertypal.com/property-for-sale/" + search
-    page=requests.get(url)
-    soup=BeautifulSoup(page.text,"lxml")
-    g_data = soup.findAll("div", {"class": "propbox-details"})
-    for item in g_data:
-        try:
-            title = item.find_all("span", {"class": "propbox-addr"})[0].text
-        except:
-            pass
-        try:
-            town = item.find_all("span", {"class": "propbox-town"})[0].text
-        except:
-            pass
-        try:
-            price = item.find_all("span", {"class": "price-value"})[0].text
-        except:
-            pass
-        try:
-            period = item.find_all("span", {"class": "price-period"})[0].text
-        except:
-            pass
-        scrape2=[title,town,price,period]
-        housestobuy.append(scrape2)
-
+    soup=makesoup(url = "https://www.propertypal.com/property-for-sale/" + search)
+    rentalscrape(g_data = soup.findAll("div", {"class": "propbox-details"}))
 
     button_next = soup.find("a", {"class": "btn paging-next"}, href=True)
     while button_next:
         time.sleep(2)#delay time requests are sent so we don't get kicked by server
-        url = "https://www.propertypal.com{0}".format(button_next["href"])
-        page=requests.get(url)
-        print(url + "  scraped successfully")
-        soup=BeautifulSoup(page.text,"lxml")
-        g_data = soup.findAll("div", {"class": "propbox-details"})
-        for item in g_data:
-            try:
-                title = item.find_all("span", {"class": "propbox-addr"})[0].text
-            except:
-                pass
-            try:
-                town = item.find_all("span", {"class": "propbox-town"})[0].text
-            except:
-                pass
-            try:
-                price = item.find_all("span", {"class": "price-value"})[0].text
-            except:
-                pass
-            try:
-                period = item.find_all("span", {"class": "price-period"})[0].text
-            except:
-                pass
-            button_next = soup.find("a", {"class" : "btn paging-next"}, href=True)
+        soup=makesoup(url = "https://www.propertypal.com{0}".format(button_next["href"]))
+        rentalscrape(g_data = soup.findAll("div", {"class": "propbox-details"}))
 
-            scrape2=[title,town,price,period]
-            housestobuy.append(scrape2)
+        button_next = soup.find("a", {"class" : "btn paging-next"}, href=True)
+
+            
 
 
 def menu():
@@ -161,9 +109,12 @@ while True:          #use while True
     if choice == 1:
         rent()
         saverent()
+        deletelist()
     elif choice == 2:
         buy()
         savebuy()
+        deletelist()
     elif choice == 3:
         break
     
+
