@@ -18,25 +18,26 @@ Run the Script, e.g. via Linux in Terminal
 
 python /home/directory/scraper.py
 
-You will be prompted with a Command Line menu containing three options:
+A GUI like the one in the image below will be displayed:
 
-1. Rental Properties
-2. Sale Properties
-3. Exit
+![alt tag](https://image.ibb.co/cBQsUG/Screenshot_20180124_021432.png)
 
-Enter a number depending on what you want to do 
+Click on the button for the option you would like. The current options are:
 
-If you select 1 or 2 you will be prompted with a message asking to input town.
+1. Search Rental Properties
+2. Search Sale Properties
 
-Input the town you would like to search for Rental or Properties to Buy e.g. Newtownabbey
+Once your choice button has been clicked, you will be prompted to enter a town, you can enter the town by name, e.g. Newtownabbey, or the first four characters of the postcode (e.g. BT14). After this has been entered press the Enter button.
 
-The scraper will then scrape data from PropertyPal.com for the town/area you entered. (URLs for each page being scraped will be displayed in the terminal, with scraped successfully beside them).
+Once the enter button has been pressed, scraping will begin. The URL of the page being scraped from the PropertyPal is displayed under the third button (just above the PropertyPal logo). 
 
-One scraping is completed, you will be prompted with a message stating to "Enter a filename to save". Enter a filename here, e.g. NewtownabbeyRentals.
+Once scraping has been completed, you will be prompted to enter a filename for the .csv file to be called that will contain the scraped data. Enter this filename and press the enter button.
 
 Once entered, a .csv file will be created in the directory where this script is present. The .csv file will be called whatever name you entered when prompted to enter file name.
 
 The scraped data will be oontained within this file.
+
+The label that contained information on the URL being scraped should now state "CSV File Saved Successfully".
 
 
 Work to be done:
